@@ -4,9 +4,48 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PumpsReportApplication"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        xmlns:rv="clr-namespace:Microsoft.Reporting.WinForms;assembly=Microsoft.ReportViewer.WinForms"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="Pumps Reports" Height="650" Width="825">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" MinHeight="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <WindowsFormsHost Grid.Row="1" Grid.Column="1">
+            <rv:ReportViewer x:Name="ReportViewer"/>
+        </WindowsFormsHost>
+        <StackPanel Grid.Row="0">
+            <Border Padding="10,5">
+                <StackPanel Orientation="Horizontal" MinHeight="25" VerticalAlignment="Center">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type Control}" x:Key="paddingStyle">
+                            <Setter Property="Padding" Value="10,20"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <Label x:Name="LabelStation">Select Station:</Label>
+                    <ComboBox x:Name="ListStations" MinWidth="100" SelectedValuePath="Id">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button x:Name="ButtonGenerate" Content="Generate" Margin="25,0,0,0" Padding="5,0" 
+                            IsDefault="True" Click="ButtonGenerate_Click" />
+                </StackPanel>
+            </Border>
+            <Border Padding="10,5">
+                <StackPanel Orientation="Horizontal">
+                    <Label x:Name="labelFromDate">From Date:</Label>
+                    <DatePicker x:Name="DatePickerFrom" />
+                    <Label x:Name="labelToDate">From Date:</Label>
+                    <DatePicker x:Name="DatePickerTo" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
     </Grid>
 </Window>
