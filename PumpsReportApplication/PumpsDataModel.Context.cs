@@ -29,7 +29,7 @@ namespace PumpsReportApplication
         public virtual DbSet<Pump> Pumps { get; set; }
         public virtual DbSet<Station> Stations { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<DailyReportView> DailyReportViews { get; set; }
         public virtual DbSet<MessageView> MessageViews { get; set; }
+        public virtual DbSet<DailyReportView> DailyReportViews { get; set; }
     }
 }

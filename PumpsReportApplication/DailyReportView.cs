@@ -14,6 +14,7 @@ namespace PumpsReportApplication
     
     public partial class DailyReportView
     {
+        public long Id { get; set; }
         public Nullable<System.DateTime> MessageDate { get; set; }
         public long StationId { get; set; }
         public long PumpId { get; set; }

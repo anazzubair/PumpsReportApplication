@@ -9,11 +9,11 @@
         <EntityTypeShape EntityType="PumpsDBModel.Pump" Width="1.5" PointX="3" PointY="8.125" IsExpanded="true" />
         <EntityTypeShape EntityType="PumpsDBModel.Station" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
         <EntityTypeShape EntityType="PumpsDBModel.User" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PumpsDBModel.DailyReportView" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PumpsDBModel.MessageView" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="PumpsDBModel.FK_Message_Pump" ManuallyRouted="false" />
         <AssociationConnector Association="PumpsDBModel.FK_Message_Station" ManuallyRouted="false" />
         <AssociationConnector Association="PumpsDBModel.FK_Pump_Station" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="PumpsDBModel.DailyReportView" Width="1.5" PointX="3.75" PointY="1.125" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

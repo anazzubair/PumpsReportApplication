@@ -57,7 +57,6 @@ namespace PumpsReportApplication
             using (var db = new PumpsDBEntities())
             {
                 var dailyReportData = db.DailyReportViews.Where(dr => dr.StationId == (long)ListStations.SelectedValue).ToList();
-                LabelStation.Content = dailyReportData.Count;
                 var pumpReportDataSource = new ReportDataSource("DailyReportDataSet", dailyReportData);
                 ReportViewer.LocalReport.DataSources.Add(pumpReportDataSource);
                 ReportViewer.LocalReport.ReportEmbeddedResource = "PumpsReportApplication.Reports.DailyReport.rdlc";
