@@ -74,6 +74,8 @@ namespace PumpsReportApplication
 
         private void GenerateYearlyReport()
         {
+            if (!IsFormValid()) return;
+
             using (var db = new PumpsDBEntities())
             {
                 var fromDate = DatePickerFrom.SelectedDate.Value;
@@ -98,6 +100,8 @@ namespace PumpsReportApplication
 
         private void GenerateMonthlyReport()
         {
+            if (!IsFormValid()) return;
+
             using (var db = new PumpsDBEntities())
             {
                 var fromDate = DatePickerFrom.SelectedDate.Value;
@@ -122,6 +126,8 @@ namespace PumpsReportApplication
 
         private void GenerateDailyReport()
         {
+            if (!IsFormValid()) return;
+
             using (var db = new PumpsDBEntities())
             {
                 var dailyReportData = db.DailyReportViews
@@ -134,9 +140,26 @@ namespace PumpsReportApplication
                 ReportViewer.LocalReport.ReportEmbeddedResource = "PumpsReportApplication.Reports.DailyReport.rdlc";
                 DisableUnwantedExportFormat(ReportViewer, "PDF");
                 DisableUnwantedExportFormat(ReportViewer, "Word");
+
+                var stationNameParameter = new ReportParameter("StationName", ((Station)ListStations.SelectedItem).Name);
+                var fromDateParameter = new ReportParameter("FromDate", DatePickerFrom.SelectedDate.Value.ToString("dd-MM-yyyy"));
+                var toDateParameter = new ReportParameter("ToDate", DatePickerTo.SelectedDate.Value.ToString("dd-MM-yyyy"));
+
+                ReportViewer.LocalReport.SetParameters(new List<ReportParameter> { stationNameParameter, fromDateParameter, toDateParameter });
+
                 ReportViewer.LocalReport.Refresh();
                 ReportViewer.RefreshReport();
             }
+        }
+
+        private bool IsFormValid()
+        {
+            if(!DatePickerFrom.SelectedDate.HasValue || !DatePickerTo.SelectedDate.HasValue)
+            {
+                MessageBox.Show("Invalid Dates");
+                return false;
+            }
+            return true;
         }
 
         public void DisableUnwantedExportFormat(ReportViewer ReportViewerID, string strFormatName)
