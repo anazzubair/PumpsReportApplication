@@ -32,7 +32,8 @@ namespace PumpsReportApplication
 
             using (var db = new PumpsDBEntities())
             {
-                var user = db.Users.FirstOrDefault(u => u.Username == TextBoxUsername.Text.Trim());
+                var user = db.Users.FirstOrDefault(u => u.Username == TextBoxUsername.Text.Trim()
+                                                    && u.IsActive == "Y");
                 if (user == null || user.Passowrd != TextBoxPassword.Password.Trim())
                 {
                     MessageBox.Show("Invalid Credentials");
