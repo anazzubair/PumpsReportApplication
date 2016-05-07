@@ -86,7 +86,7 @@ namespace PumpsReportApplication
                 var yearlyReportData = db.YearlyReportViews
                                         .Where(dr => dr.StationId == (long)ListStations.SelectedValue
                                          && dr.MessageDate >= fromDate.Year
-                                        && dr.MessageDate < toDate.Year+1)
+                                        && dr.MessageDate < (toDate.Year + 1))
                                         .ToList();
                 var pumpReportDataSource = new ReportDataSource("YearlyReportDataSet", yearlyReportData);
                 ReportViewer.LocalReport.DataSources.Add(pumpReportDataSource);
