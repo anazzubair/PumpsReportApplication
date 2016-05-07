@@ -112,7 +112,31 @@ warning 6002: The table/view 'PumpsDB.dbo.MonthlyReportView' does not have a pri
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="bigint" Nullable="false" />
-          <Property Name="MessageDate" Type="varchar" MaxLength="7" />
+          <Property Name="MessageDate" Type="datetime" />
+          <Property Name="StationId" Type="bigint" Nullable="false" />
+          <Property Name="PumpId" Type="bigint" Nullable="false" />
+          <Property Name="TotalRunHours" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DailyRunHours" Type="decimal" Precision="38" Scale="6" />
+          <Property Name="NumberOfFaults" Type="bigint" />
+          <Property Name="Pressure" Type="decimal" Precision="38" Scale="6" />
+          <Property Name="Amps" Type="decimal" Precision="38" Scale="6" />
+          <Property Name="GeneratorKWH" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="MainsKWH" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Pump" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Station" Type="nvarchar" MaxLength="250" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="YearlyReportView">
+          <Key>
+            
+            
+            
+            
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="MessageDate" Type="int" />
           <Property Name="StationId" Type="bigint" Nullable="false" />
           <Property Name="PumpId" Type="bigint" Nullable="false" />
           <Property Name="TotalRunHours" Type="decimal" Precision="18" Scale="2" />
@@ -217,6 +241,23 @@ warning 6002: The table/view 'PumpsDB.dbo.MonthlyReportView' does not have a pri
     [MonthlyReportView].[Pump] AS [Pump], 
     [MonthlyReportView].[Station] AS [Station]
     FROM [dbo].[MonthlyReportView] AS [MonthlyReportView]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="YearlyReportView" EntityType="Self.YearlyReportView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [YearlyReportView].[Id] AS [Id], 
+    [YearlyReportView].[MessageDate] AS [MessageDate], 
+    [YearlyReportView].[StationId] AS [StationId], 
+    [YearlyReportView].[PumpId] AS [PumpId], 
+    [YearlyReportView].[TotalRunHours] AS [TotalRunHours], 
+    [YearlyReportView].[DailyRunHours] AS [DailyRunHours], 
+    [YearlyReportView].[NumberOfFaults] AS [NumberOfFaults], 
+    [YearlyReportView].[Pressure] AS [Pressure], 
+    [YearlyReportView].[Amps] AS [Amps], 
+    [YearlyReportView].[GeneratorKWH] AS [GeneratorKWH], 
+    [YearlyReportView].[MainsKWH] AS [MainsKWH], 
+    [YearlyReportView].[Pump] AS [Pump], 
+    [YearlyReportView].[Station] AS [Station]
+    FROM [dbo].[YearlyReportView] AS [YearlyReportView]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_Message_Pump" Association="Self.FK_Message_Pump">
             <End Role="Pump" EntitySet="Pump" />
@@ -357,6 +398,7 @@ warning 6002: The table/view 'PumpsDB.dbo.MonthlyReportView' does not have a pri
             <End Role="Pump" EntitySet="Pumps" />
           </AssociationSet>
           <EntitySet Name="DailyReportViews" EntityType="PumpsDBModel.DailyReportView" />
+          <EntitySet Name="YearlyReportViews" EntityType="PumpsDBModel.YearlyReportView" />
           <EntitySet Name="MonthlyReportViews" EntityType="PumpsDBModel.MonthlyReportView" />
         </EntityContainer>
         <EntityType Name="DailyReportView">
@@ -377,12 +419,30 @@ warning 6002: The table/view 'PumpsDB.dbo.MonthlyReportView' does not have a pri
           <Property Name="Pump" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Station" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="YearlyReportView">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="MessageDate" Type="Int32" />
+          <Property Name="StationId" Type="Int64" Nullable="false" />
+          <Property Name="PumpId" Type="Int64" Nullable="false" />
+          <Property Name="TotalRunHours" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DailyRunHours" Type="Decimal" Precision="38" Scale="6" />
+          <Property Name="NumberOfFaults" Type="Int64" />
+          <Property Name="Pressure" Type="Decimal" Precision="38" Scale="6" />
+          <Property Name="Amps" Type="Decimal" Precision="38" Scale="6" />
+          <Property Name="GeneratorKWH" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="MainsKWH" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Pump" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Station" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="MonthlyReportView">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="MessageDate" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="MessageDate" Type="DateTime" Precision="3" />
           <Property Name="StationId" Type="Int64" Nullable="false" />
           <Property Name="PumpId" Type="Int64" Nullable="false" />
           <Property Name="TotalRunHours" Type="Decimal" Precision="18" Scale="2" />
@@ -470,6 +530,25 @@ warning 6002: The table/view 'PumpsDB.dbo.MonthlyReportView' does not have a pri
           <EntitySetMapping Name="DailyReportViews">
             <EntityTypeMapping TypeName="PumpsDBModel.DailyReportView">
               <MappingFragment StoreEntitySet="DailyReportView">
+                <ScalarProperty Name="Station" ColumnName="Station" />
+                <ScalarProperty Name="Pump" ColumnName="Pump" />
+                <ScalarProperty Name="MainsKWH" ColumnName="MainsKWH" />
+                <ScalarProperty Name="GeneratorKWH" ColumnName="GeneratorKWH" />
+                <ScalarProperty Name="Amps" ColumnName="Amps" />
+                <ScalarProperty Name="Pressure" ColumnName="Pressure" />
+                <ScalarProperty Name="NumberOfFaults" ColumnName="NumberOfFaults" />
+                <ScalarProperty Name="DailyRunHours" ColumnName="DailyRunHours" />
+                <ScalarProperty Name="TotalRunHours" ColumnName="TotalRunHours" />
+                <ScalarProperty Name="PumpId" ColumnName="PumpId" />
+                <ScalarProperty Name="StationId" ColumnName="StationId" />
+                <ScalarProperty Name="MessageDate" ColumnName="MessageDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="YearlyReportViews">
+            <EntityTypeMapping TypeName="PumpsDBModel.YearlyReportView">
+              <MappingFragment StoreEntitySet="YearlyReportView">
                 <ScalarProperty Name="Station" ColumnName="Station" />
                 <ScalarProperty Name="Pump" ColumnName="Pump" />
                 <ScalarProperty Name="MainsKWH" ColumnName="MainsKWH" />

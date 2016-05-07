@@ -1,6 +1,7 @@
 ﻿using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -73,14 +74,42 @@ namespace PumpsReportApplication
 
         private void GenerateYearlyReport()
         {
-            throw new NotImplementedException();
+            using (var db = new PumpsDBEntities())
+            {
+                var fromDate = DatePickerFrom.SelectedDate.Value;
+                var toDate = DatePickerTo.SelectedDate.Value;
+                var firstOfFromYear = new DateTime(fromDate.Year, fromDate.Month, 1);
+                var firstOfYearSucceedingToDate = new DateTime(toDate.AddYears(1).Year, 1, 1);
+
+                var yearlyReportData = db.YearlyReportViews
+                                        .Where(dr => dr.StationId == (long)ListStations.SelectedValue
+                                         && dr.MessageDate >= fromDate.Year
+                                        && dr.MessageDate < toDate.Year+1)
+                                        .ToList();
+                var pumpReportDataSource = new ReportDataSource("YearlyReportDataSet", yearlyReportData);
+                ReportViewer.LocalReport.DataSources.Add(pumpReportDataSource);
+                ReportViewer.LocalReport.ReportEmbeddedResource = "PumpsReportApplication.Reports.YearlyReport.rdlc";
+                DisableUnwantedExportFormat(ReportViewer, "PDF");
+                DisableUnwantedExportFormat(ReportViewer, "Word");
+                ReportViewer.LocalReport.Refresh();
+                ReportViewer.RefreshReport();
+            }
         }
 
         private void GenerateMonthlyReport()
         {
             using (var db = new PumpsDBEntities())
             {
-                var monthlyReportData = db.MonthlyReportViews.Where(dr => dr.StationId == (long)ListStations.SelectedValue).ToList();
+                var fromDate = DatePickerFrom.SelectedDate.Value;
+                var toDate = DatePickerTo.SelectedDate.Value;
+                var firstOfFromMonth = new DateTime(fromDate.Year, fromDate.Month, 1);
+                var firstOfMonthSucceedingToDate = new DateTime(toDate.Year, toDate.AddMonths(1).Month, 1);
+
+                var monthlyReportData = db.MonthlyReportViews
+                                        .Where(dr => dr.StationId == (long)ListStations.SelectedValue
+                                        && dr.MessageDate >= firstOfFromMonth
+                                        && dr.MessageDate < firstOfMonthSucceedingToDate)
+                                        .ToList();
                 var pumpReportDataSource = new ReportDataSource("MonthlyReportDataSet", monthlyReportData);
                 ReportViewer.LocalReport.DataSources.Add(pumpReportDataSource);
                 ReportViewer.LocalReport.ReportEmbeddedResource = "PumpsReportApplication.Reports.MonthlyReport.rdlc";
@@ -95,7 +124,11 @@ namespace PumpsReportApplication
         {
             using (var db = new PumpsDBEntities())
             {
-                var dailyReportData = db.DailyReportViews.Where(dr => dr.StationId == (long)ListStations.SelectedValue).ToList();
+                var dailyReportData = db.DailyReportViews
+                                        .Where(dr => dr.StationId == (long)ListStations.SelectedValue
+                                         && dr.MessageDate >= DatePickerFrom.SelectedDate
+                                         && dr.MessageDate < DbFunctions.AddDays(DatePickerTo.SelectedDate, 1))
+                                        .ToList();
                 var pumpReportDataSource = new ReportDataSource("DailyReportDataSet", dailyReportData);
                 ReportViewer.LocalReport.DataSources.Add(pumpReportDataSource);
                 ReportViewer.LocalReport.ReportEmbeddedResource = "PumpsReportApplication.Reports.DailyReport.rdlc";

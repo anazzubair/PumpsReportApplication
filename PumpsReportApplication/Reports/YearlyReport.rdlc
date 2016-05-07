@@ -308,39 +308,6 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="GeneratorKWH">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>=Max(Fields!GeneratorKWH.Value)</Value>
-                              <Style>
-                                <FontFamily>Times New Roman</FontFamily>
-                                <FontSize>11pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style />
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>GeneratorKWH</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>#e5e5e5</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
                     <Textbox Name="MainsKWH">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
@@ -359,6 +326,39 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>MainsKWH</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>#e5e5e5</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="GeneratorKWH">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Max(Fields!GeneratorKWH.Value)</Value>
+                              <Style>
+                                <FontFamily>Times New Roman</FontFamily>
+                                <FontSize>11pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>GeneratorKWH</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>#e5e5e5</Color>
@@ -679,7 +679,7 @@
                               <Paragraph>
                                 <TextRuns>
                                   <TextRun>
-                                    <Value>Generator KWH</Value>
+                                    <Value>Mains KWH</Value>
                                     <Style>
                                       <FontFamily>Times New Roman</FontFamily>
                                       <FontSize>11pt</FontSize>
@@ -718,7 +718,7 @@
                               <Paragraph>
                                 <TextRuns>
                                   <TextRun>
-                                    <Value>Mains KWH</Value>
+                                    <Value>Generator KWH</Value>
                                     <Style>
                                       <FontFamily>Times New Roman</FontFamily>
                                       <FontSize>11pt</FontSize>
@@ -775,7 +775,7 @@
                       <Paragraph>
                         <TextRuns>
                           <TextRun>
-                            <Value>=Format(Fields!MessageDate.Value, "MMM-yyyy")</Value>
+                            <Value>=Fields!MessageDate.Value</Value>
                             <Style>
                               <FontFamily>Times New Roman</FontFamily>
                               <FontSize>11pt</FontSize>
@@ -800,7 +800,6 @@
                       <PaddingBottom>2pt</PaddingBottom>
                     </Style>
                   </Textbox>
-                  <rd:Selected>true</rd:Selected>
                 </CellContents>
               </TablixHeader>
               <TablixMembers>
@@ -809,7 +808,7 @@
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
-        <DataSetName>MonthlyReportDataSet</DataSetName>
+        <DataSetName>YearlyReportDataSet</DataSetName>
         <Height>1in</Height>
         <Width>8in</Width>
         <Style>
@@ -837,11 +836,11 @@
         <DataProvider>System.Data.DataSet</DataProvider>
         <ConnectString>/* Local Connection */</ConnectString>
       </ConnectionProperties>
-      <rd:DataSourceID>7136013e-2d7e-4614-81a6-bd8a146da000</rd:DataSourceID>
+      <rd:DataSourceID>bd8b64b2-9afe-426f-9a79-1325d4bd3b01</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="MonthlyReportDataSet">
+    <DataSet Name="YearlyReportDataSet">
       <Query>
         <DataSourceName>PumpsReportApplication</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
@@ -869,7 +868,7 @@
         </Field>
         <Field Name="MessageDate">
           <DataField>MessageDate</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="NumberOfFaults">
           <DataField>NumberOfFaults</DataField>
@@ -902,11 +901,11 @@
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>PumpsReportApplication</rd:DataSetName>
-        <rd:TableName>MonthlyReportView</rd:TableName>
-        <rd:ObjectDataSourceType>PumpsReportApplication.MonthlyReportView, PumpsReportApplication, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
+        <rd:TableName>YearlyReportView</rd:TableName>
+        <rd:ObjectDataSourceType>PumpsReportApplication.YearlyReportView, PumpsReportApplication, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
-  <rd:ReportID>a705c038-2348-49fd-8533-665c26ddd368</rd:ReportID>
+  <rd:ReportID>0ef6af6b-ffcb-4e73-bf39-7bf1459702e9</rd:ReportID>
 </Report>

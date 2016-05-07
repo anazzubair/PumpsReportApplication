@@ -12,10 +12,10 @@ namespace PumpsReportApplication
     using System;
     using System.Collections.Generic;
     
-    public partial class MonthlyReportView
+    public partial class YearlyReportView
     {
         public long Id { get; set; }
-        public Nullable<System.DateTime> MessageDate { get; set; }
+        public Nullable<int> MessageDate { get; set; }
         public long StationId { get; set; }
         public long PumpId { get; set; }
         public Nullable<decimal> TotalRunHours { get; set; }
