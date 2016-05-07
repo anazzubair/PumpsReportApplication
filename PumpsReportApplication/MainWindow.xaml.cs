@@ -93,6 +93,13 @@ namespace PumpsReportApplication
                 ReportViewer.LocalReport.ReportEmbeddedResource = "PumpsReportApplication.Reports.YearlyReport.rdlc";
                 DisableUnwantedExportFormat(ReportViewer, "PDF");
                 DisableUnwantedExportFormat(ReportViewer, "Word");
+
+                var stationNameParameter = new ReportParameter("StationName", ((Station)ListStations.SelectedItem).Name);
+                var fromDateParameter = new ReportParameter("FromDate", DatePickerFrom.SelectedDate.Value.ToString("yyyy"));
+                var toDateParameter = new ReportParameter("ToDate", DatePickerTo.SelectedDate.Value.ToString("yyyy"));
+
+                ReportViewer.LocalReport.SetParameters(new List<ReportParameter> { stationNameParameter, fromDateParameter, toDateParameter });
+
                 ReportViewer.LocalReport.Refresh();
                 ReportViewer.RefreshReport();
             }
@@ -119,6 +126,13 @@ namespace PumpsReportApplication
                 ReportViewer.LocalReport.ReportEmbeddedResource = "PumpsReportApplication.Reports.MonthlyReport.rdlc";
                 DisableUnwantedExportFormat(ReportViewer, "PDF");
                 DisableUnwantedExportFormat(ReportViewer, "Word");
+
+                var stationNameParameter = new ReportParameter("StationName", ((Station)ListStations.SelectedItem).Name);
+                var fromDateParameter = new ReportParameter("FromDate", DatePickerFrom.SelectedDate.Value.ToString("MMM-yyyy"));
+                var toDateParameter = new ReportParameter("ToDate", DatePickerTo.SelectedDate.Value.ToString("MMM-yyyy"));
+
+                ReportViewer.LocalReport.SetParameters(new List<ReportParameter> { stationNameParameter, fromDateParameter, toDateParameter });
+
                 ReportViewer.LocalReport.Refresh();
                 ReportViewer.RefreshReport();
             }

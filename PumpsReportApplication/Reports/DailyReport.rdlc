@@ -19,7 +19,6 @@
                     </Style>
                   </Image>
                   <RowSpan>3</RowSpan>
-                  <rd:Selected>true</rd:Selected>
                 </CellContents>
               </TablixCornerCell>
             </TablixCornerRow>
