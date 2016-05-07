@@ -31,5 +31,6 @@ namespace PumpsReportApplication
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<MessageView> MessageViews { get; set; }
         public virtual DbSet<DailyReportView> DailyReportViews { get; set; }
+        public virtual DbSet<MonthlyReportView> MonthlyReportViews { get; set; }
     }
 }

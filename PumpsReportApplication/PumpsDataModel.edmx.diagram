@@ -14,6 +14,7 @@
         <AssociationConnector Association="PumpsDBModel.FK_Message_Station" ManuallyRouted="false" />
         <AssociationConnector Association="PumpsDBModel.FK_Pump_Station" ManuallyRouted="false" />
         <EntityTypeShape EntityType="PumpsDBModel.DailyReportView" Width="1.5" PointX="3.75" PointY="1.125" />
+        <EntityTypeShape EntityType="PumpsDBModel.MonthlyReportView" Width="1.5" PointX="7.375" PointY="5.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

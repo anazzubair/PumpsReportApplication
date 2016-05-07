@@ -32,6 +32,7 @@ namespace PumpsReportApplication
         {
             FillStationsList();
             SetDatePickers();
+            ListReportTypes.SelectedIndex = 0;
         }
 
         private void SetDatePickers()
@@ -54,6 +55,44 @@ namespace PumpsReportApplication
         {
             ReportViewer.Reset();
 
+            switch (ListReportTypes.SelectedValue.ToString())
+            {
+                case "Daily":
+                    GenerateDailyReport();
+                    break;
+                case "Monthly":
+                    GenerateMonthlyReport();
+                    break;
+                case "Yearly":
+                    GenerateYearlyReport();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void GenerateYearlyReport()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void GenerateMonthlyReport()
+        {
+            using (var db = new PumpsDBEntities())
+            {
+                var monthlyReportData = db.MonthlyReportViews.Where(dr => dr.StationId == (long)ListStations.SelectedValue).ToList();
+                var pumpReportDataSource = new ReportDataSource("MonthlyReportDataSet", monthlyReportData);
+                ReportViewer.LocalReport.DataSources.Add(pumpReportDataSource);
+                ReportViewer.LocalReport.ReportEmbeddedResource = "PumpsReportApplication.Reports.MonthlyReport.rdlc";
+                DisableUnwantedExportFormat(ReportViewer, "PDF");
+                DisableUnwantedExportFormat(ReportViewer, "Word");
+                ReportViewer.LocalReport.Refresh();
+                ReportViewer.RefreshReport();
+            }
+        }
+
+        private void GenerateDailyReport()
+        {
             using (var db = new PumpsDBEntities())
             {
                 var dailyReportData = db.DailyReportViews.Where(dr => dr.StationId == (long)ListStations.SelectedValue).ToList();

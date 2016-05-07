@@ -51,6 +51,10 @@
 warning 6002: The table/view 'PumpsDB.dbo.DailyReportView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DailyReportView">
           <Key>
+            
+            
+            
+            
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="bigint" Nullable="false" />
@@ -72,19 +76,19 @@ warning 6002: The table/view 'PumpsDB.dbo.MessageView' does not have a primary k
         <EntityType Name="MessageView">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="StationId" />
-            <PropertyRef Name="PumpId" />
-            <PropertyRef Name="Pump" />
-            <PropertyRef Name="Station" />
-            <PropertyRef Name="TotalRunHours" />
-            <PropertyRef Name="NumberOfFaults" />
-            <PropertyRef Name="Pressure" />
-            <PropertyRef Name="Amps" />
-            <PropertyRef Name="MainsKWH" />
-            <PropertyRef Name="GeneratorKWH" />
-            <PropertyRef Name="IsFault" />
-            <PropertyRef Name="MessageTime" />
-            <PropertyRef Name="ReceiveTime" />
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
           </Key>
           <Property Name="Id" Type="bigint" Nullable="false" />
           <Property Name="StationId" Type="bigint" Nullable="false" />
@@ -100,6 +104,26 @@ warning 6002: The table/view 'PumpsDB.dbo.MessageView' does not have a primary k
           <Property Name="IsFault" Type="nchar" MaxLength="1" Nullable="false" />
           <Property Name="MessageTime" Type="datetime" Nullable="false" />
           <Property Name="ReceiveTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PumpsDB.dbo.MonthlyReportView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MonthlyReportView">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="MessageDate" Type="varchar" MaxLength="7" />
+          <Property Name="StationId" Type="bigint" Nullable="false" />
+          <Property Name="PumpId" Type="bigint" Nullable="false" />
+          <Property Name="TotalRunHours" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DailyRunHours" Type="decimal" Precision="38" Scale="6" />
+          <Property Name="NumberOfFaults" Type="bigint" />
+          <Property Name="Pressure" Type="decimal" Precision="38" Scale="6" />
+          <Property Name="Amps" Type="decimal" Precision="38" Scale="6" />
+          <Property Name="GeneratorKWH" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="MainsKWH" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Pump" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Station" Type="nvarchar" MaxLength="250" Nullable="false" />
         </EntityType>
         <Association Name="FK_Message_Pump">
           <End Role="Pump" Type="Self.Pump" Multiplicity="1" />
@@ -177,6 +201,23 @@ warning 6002: The table/view 'PumpsDB.dbo.MessageView' does not have a primary k
     [MessageView].[ReceiveTime] AS [ReceiveTime]
     FROM [dbo].[MessageView] AS [MessageView]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="MonthlyReportView" EntityType="Self.MonthlyReportView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MonthlyReportView].[Id] AS [Id], 
+    [MonthlyReportView].[MessageDate] AS [MessageDate], 
+    [MonthlyReportView].[StationId] AS [StationId], 
+    [MonthlyReportView].[PumpId] AS [PumpId], 
+    [MonthlyReportView].[TotalRunHours] AS [TotalRunHours], 
+    [MonthlyReportView].[DailyRunHours] AS [DailyRunHours], 
+    [MonthlyReportView].[NumberOfFaults] AS [NumberOfFaults], 
+    [MonthlyReportView].[Pressure] AS [Pressure], 
+    [MonthlyReportView].[Amps] AS [Amps], 
+    [MonthlyReportView].[GeneratorKWH] AS [GeneratorKWH], 
+    [MonthlyReportView].[MainsKWH] AS [MainsKWH], 
+    [MonthlyReportView].[Pump] AS [Pump], 
+    [MonthlyReportView].[Station] AS [Station]
+    FROM [dbo].[MonthlyReportView] AS [MonthlyReportView]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_Message_Pump" Association="Self.FK_Message_Pump">
             <End Role="Pump" EntitySet="Pump" />
             <End Role="Message" EntitySet="Message" />
@@ -245,19 +286,6 @@ warning 6002: The table/view 'PumpsDB.dbo.MessageView' does not have a primary k
         <EntityType Name="MessageView">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="StationId" />
-            <PropertyRef Name="PumpId" />
-            <PropertyRef Name="Pump" />
-            <PropertyRef Name="Station" />
-            <PropertyRef Name="TotalRunHours" />
-            <PropertyRef Name="NumberOfFaults" />
-            <PropertyRef Name="Pressure" />
-            <PropertyRef Name="Amps" />
-            <PropertyRef Name="MainsKWH" />
-            <PropertyRef Name="GeneratorKWH" />
-            <PropertyRef Name="IsFault" />
-            <PropertyRef Name="MessageTime" />
-            <PropertyRef Name="ReceiveTime" />
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" />
           <Property Name="StationId" Type="Int64" Nullable="false" />
@@ -329,6 +357,7 @@ warning 6002: The table/view 'PumpsDB.dbo.MessageView' does not have a primary k
             <End Role="Pump" EntitySet="Pumps" />
           </AssociationSet>
           <EntitySet Name="DailyReportViews" EntityType="PumpsDBModel.DailyReportView" />
+          <EntitySet Name="MonthlyReportViews" EntityType="PumpsDBModel.MonthlyReportView" />
         </EntityContainer>
         <EntityType Name="DailyReportView">
           <Key>
@@ -336,6 +365,24 @@ warning 6002: The table/view 'PumpsDB.dbo.MessageView' does not have a primary k
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" />
           <Property Name="MessageDate" Type="DateTime" Precision="0" />
+          <Property Name="StationId" Type="Int64" Nullable="false" />
+          <Property Name="PumpId" Type="Int64" Nullable="false" />
+          <Property Name="TotalRunHours" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DailyRunHours" Type="Decimal" Precision="38" Scale="6" />
+          <Property Name="NumberOfFaults" Type="Int64" />
+          <Property Name="Pressure" Type="Decimal" Precision="38" Scale="6" />
+          <Property Name="Amps" Type="Decimal" Precision="38" Scale="6" />
+          <Property Name="GeneratorKWH" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="MainsKWH" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Pump" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Station" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MonthlyReportView">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="MessageDate" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
           <Property Name="StationId" Type="Int64" Nullable="false" />
           <Property Name="PumpId" Type="Int64" Nullable="false" />
           <Property Name="TotalRunHours" Type="Decimal" Precision="18" Scale="2" />
@@ -423,6 +470,25 @@ warning 6002: The table/view 'PumpsDB.dbo.MessageView' does not have a primary k
           <EntitySetMapping Name="DailyReportViews">
             <EntityTypeMapping TypeName="PumpsDBModel.DailyReportView">
               <MappingFragment StoreEntitySet="DailyReportView">
+                <ScalarProperty Name="Station" ColumnName="Station" />
+                <ScalarProperty Name="Pump" ColumnName="Pump" />
+                <ScalarProperty Name="MainsKWH" ColumnName="MainsKWH" />
+                <ScalarProperty Name="GeneratorKWH" ColumnName="GeneratorKWH" />
+                <ScalarProperty Name="Amps" ColumnName="Amps" />
+                <ScalarProperty Name="Pressure" ColumnName="Pressure" />
+                <ScalarProperty Name="NumberOfFaults" ColumnName="NumberOfFaults" />
+                <ScalarProperty Name="DailyRunHours" ColumnName="DailyRunHours" />
+                <ScalarProperty Name="TotalRunHours" ColumnName="TotalRunHours" />
+                <ScalarProperty Name="PumpId" ColumnName="PumpId" />
+                <ScalarProperty Name="StationId" ColumnName="StationId" />
+                <ScalarProperty Name="MessageDate" ColumnName="MessageDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MonthlyReportViews">
+            <EntityTypeMapping TypeName="PumpsDBModel.MonthlyReportView">
+              <MappingFragment StoreEntitySet="MonthlyReportView">
                 <ScalarProperty Name="Station" ColumnName="Station" />
                 <ScalarProperty Name="Pump" ColumnName="Pump" />
                 <ScalarProperty Name="MainsKWH" ColumnName="MainsKWH" />
