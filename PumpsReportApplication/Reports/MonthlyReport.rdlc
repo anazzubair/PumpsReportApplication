@@ -457,10 +457,10 @@
                             <rd:DefaultName>Pump</rd:DefaultName>
                             <Style>
                               <Border>
-                                <Color>White</Color>
+                                <Color>#78b07c</Color>
                                 <Style>Solid</Style>
                               </Border>
-                              <BackgroundColor>=IIf(RunningValue(Fields!Pump.Value.ToString, CountDistinct, Nothing) Mod 2, "Orange", "#66a068")</BackgroundColor>
+                              <BackgroundColor>=IIf(RunningValue(Fields!Pump.Value.ToString, CountDistinct, Nothing) Mod 2, "#82ae2b", "#66a068")</BackgroundColor>
                               <PaddingLeft>2pt</PaddingLeft>
                               <PaddingRight>2pt</PaddingRight>
                               <PaddingTop>2pt</PaddingTop>
