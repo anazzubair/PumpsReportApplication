@@ -332,7 +332,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
               </TablixCells>
@@ -361,7 +360,7 @@
                           </TextRun>
                         </TextRuns>
                         <Style>
-                          <TextAlign>Center</TextAlign>
+                          <TextAlign>Left</TextAlign>
                         </Style>
                       </Paragraph>
                     </Paragraphs>
@@ -401,7 +400,7 @@
                               </TextRun>
                             </TextRuns>
                             <Style>
-                              <TextAlign>Center</TextAlign>
+                              <TextAlign>Left</TextAlign>
                             </Style>
                           </Paragraph>
                         </Paragraphs>
@@ -458,16 +457,17 @@
                             <rd:DefaultName>Pump</rd:DefaultName>
                             <Style>
                               <Border>
-                                <Color>#78b07c</Color>
+                                <Color>White</Color>
                                 <Style>Solid</Style>
                               </Border>
-                              <BackgroundColor>#66a068</BackgroundColor>
+                              <BackgroundColor>=IIf(RunningValue(Fields!Pump.Value.ToString, CountDistinct, Nothing) Mod 2, "Orange", "#66a068")</BackgroundColor>
                               <PaddingLeft>2pt</PaddingLeft>
                               <PaddingRight>2pt</PaddingRight>
                               <PaddingTop>2pt</PaddingTop>
                               <PaddingBottom>2pt</PaddingBottom>
                             </Style>
                           </Textbox>
+                          <rd:Selected>true</rd:Selected>
                         </CellContents>
                       </TablixHeader>
                       <TablixMembers>
