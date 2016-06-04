@@ -964,6 +964,61 @@
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
   </ReportParameters>
+  <Code>Public minMainsKWH As Double = 1000000000
+Public maxMainsKWH As Double = 0.0
+Public minGeneratorKWH As Double = 1000000000
+Public maxGenreratorKWH As Double = 0.0
+Public mainsCount As Integer = 0
+Public totalMains As Double = 0.0
+Public generatorCount As Integer = 0
+Public totalGenerator As Double = 0.0
+
+Public Function ProcessMains(ByVal value As Double) As Double
+    minMainsKWH = If(minMainsKWH &lt; value, minMainsKWH, value)
+    maxMainsKWH = If(maxMainsKWH &gt; value, maxMainsKWH, value)
+    If (value &lt;&gt; 0) Then
+        mainsCount += 1
+        totalMains += value
+    End If
+    Return value
+End Function
+
+Public Function ProcessGenerator(ByVal value As Double) As Double
+    minGeneratorKWH = If(minGeneratorKWH &lt; value, minGeneratorKWH, value)
+    maxGenreratorKWH = If(maxGenreratorKWH &gt; value, maxGenreratorKWH, value)
+    If (value &lt;&gt; 0) Then
+        generatorCount += 1
+        totalGenerator += value
+    End If
+    Return value
+End Function
+
+Public Function GetMains(Param As String) As Double
+    Select Case Param
+        Case "Min"
+            Return minMainsKWH
+        Case "Max"
+            Return maxMainsKWH
+        Case "Avg"
+            Return If(mainsCount = 0, 0, totalMains / mainsCount)
+        Case Else
+            Return 0.0
+    End Select
+End Function
+
+Public Function GetGenerator(Param As String) As Double
+    Select Case Param
+        Case "Min"
+            Return minGeneratorKWH
+        Case "Max"
+            Return maxGenreratorKWH
+        Case "Avg"
+            Return If(generatorCount = 0, 0, totalGenerator / generatorCount)
+        Case Else
+            Return 0.0
+    End Select
+End Function
+</Code>
   <EmbeddedImages>
     <EmbeddedImage Name="clientlogo">
       <MIMEType>image/jpeg</MIMEType>
