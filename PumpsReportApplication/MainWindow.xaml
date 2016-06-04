@@ -7,7 +7,7 @@
         xmlns:rv="clr-namespace:Microsoft.Reporting.WinForms;assembly=Microsoft.ReportViewer.WinForms"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="PumpsReportApplication.MainWindow"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="Pumps Reports" Height="650" Width="825">
+        Title="Report Manager" Height="650" Width="825">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" MinHeight="50" />

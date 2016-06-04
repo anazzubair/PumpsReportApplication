@@ -37,7 +37,7 @@
             </Grid.ColumnDefinitions>
 
             <Image Source="Images\confidologo.png" Grid.Column="0" />
-            <Image Source="Images\clientlogo.png" Grid.Column="1" />
+            <Image Source="Images\clientlogo.jpg" Grid.Column="1" />
 
         </Grid>
     </Grid>
