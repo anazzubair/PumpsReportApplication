@@ -156,8 +156,8 @@ namespace PumpsReportApplication
                 DisableUnwantedExportFormat(ReportViewer, "Word");
 
                 var stationNameParameter = new ReportParameter("StationName", ((Station)ListStations.SelectedItem).Name);
-                var fromDateParameter = new ReportParameter("FromDate", DatePickerFrom.SelectedDate.Value.ToString("dd-MM-yyyy"));
-                var toDateParameter = new ReportParameter("ToDate", DatePickerTo.SelectedDate.Value.ToString("dd-MM-yyyy"));
+                var fromDateParameter = new ReportParameter("FromDate", DatePickerFrom.SelectedDate.Value.ToString("dd/MM/yyyy"));
+                var toDateParameter = new ReportParameter("ToDate", DatePickerTo.SelectedDate.Value.ToString("dd/MM/yyyy"));
 
                 ReportViewer.LocalReport.SetParameters(new List<ReportParameter> { stationNameParameter, fromDateParameter, toDateParameter });
 
