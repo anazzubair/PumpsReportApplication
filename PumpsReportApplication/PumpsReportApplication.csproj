@@ -156,8 +156,17 @@
     <EmbeddedResource Include="Reports\MonthlyReport.rdlc" />
     <EmbeddedResource Include="Reports\YearlyReport.rdlc" />
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\App.datasource" />
     <None Include="Properties\DataSources\DailyReportView.datasource" />
+    <None Include="Properties\DataSources\LoginWindow.datasource" />
+    <None Include="Properties\DataSources\MainWindow.datasource" />
+    <None Include="Properties\DataSources\Message.datasource" />
+    <None Include="Properties\DataSources\MessageView.datasource" />
     <None Include="Properties\DataSources\MonthlyReportView.datasource" />
+    <None Include="Properties\DataSources\Pump.datasource" />
+    <None Include="Properties\DataSources\PumpsDBEntities.datasource" />
+    <None Include="Properties\DataSources\Station.datasource" />
+    <None Include="Properties\DataSources\User.datasource" />
     <None Include="Properties\DataSources\YearlyReportView.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
