@@ -43,7 +43,7 @@
                 <StackPanel Orientation="Horizontal">
                     <Label x:Name="labelFromDate" Content="From Date:"/>
                     <DatePicker x:Name="DatePickerFrom" />
-                    <Label x:Name="labelToDate" Content="From Date:"/>
+                    <Label x:Name="labelToDate" Content="To Date:"/>
                     <DatePicker x:Name="DatePickerTo" />
                     <Button x:Name="ButtonGenerate" Content="Generate" Margin="25,0,0,0" Padding="5,0" 
 						IsDefault="True" Click="ButtonGenerate_Click" />
