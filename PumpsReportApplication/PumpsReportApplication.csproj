@@ -185,6 +185,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\dbscripts.sql" />
     <Resource Include="Images\confidologo.png" />
     <Resource Include="Images\clientlogo.jpg" />
     <Resource Include="confidologo.ico" />
