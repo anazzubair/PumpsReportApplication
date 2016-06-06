@@ -191,16 +191,21 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE VIEW [dbo].[MonthlyReportView]
 AS
-SELECT row_number() OVER (ORDER BY dateadd(month, datediff(month, 0, dbo.Message.MessageTime),0), dbo.Message.StationId, dbo.Message.PumpId) AS Id, 
-dateadd(month, datediff(month, 0, dbo.Message.MessageTime),0) AS MessageDate, dbo.Message.StationId, dbo.Message.PumpId, MAX(dbo.Message.TotalRunHours) AS TotalRunHours, 
-AVG(dbo.Message.DailyRunHours) AS DailyRunHours, MAX(dbo.Message.NumberOfFaults) AS NumberOfFaults, 
+SELECT row_number() OVER (ORDER BY DATEPART(m, messagetime), DATEPART(yyyy, messagetime), dbo.Message.StationId, dbo.Message.PumpId) AS Id, 
+(max(totalrunhours) - (select max(mm.totalrunhours) from message mm 
+						where DATEPART(m, dateadd(m, 1, mm.messagetime)) = DATEPART(m, dbo.message.messagetime)
+						AND DATEPART(yyyy, dateadd(m, 1, mm.messagetime)) = DATEPART(yyyy, dbo.message.messagetime)
+						and mm.stationid = dbo.message.stationid and mm.pumpid = dbo.message.pumpid)) as MonthlyRunHours,
+datefromparts(datepart(yyyy, messagetime), datepart(m,messagetime), 1) AS MessageDate, dbo.Message.StationId, dbo.Message.PumpId, 
+MAX(dbo.Message.TotalRunHours) AS TotalRunHours, 
+MAX(dbo.Message.NumberOfFaults) AS NumberOfFaults, 
 AVG(dbo.Message.Pressure) AS Pressure, AVG(dbo.Message.Amps) AS Amps, MAX(dbo.Message.GeneratorKWH) 
 AS GeneratorKWH, MAX(dbo.Message.MainsKWH) AS MainsKWH, dbo.Pump.Name AS Pump, 
 dbo.Station.Name AS Station
 FROM dbo.Message INNER JOIN
     dbo.Pump ON dbo.Message.PumpId = dbo.Pump.Id INNER JOIN
     dbo.Station ON dbo.Message.StationId = dbo.Station.Id
-GROUP BY dateadd(month, datediff(month, 0, dbo.Message.MessageTime),0) , 
+GROUP BY DATEPART(m, messagetime), DATEPART(yyyy, messagetime), 
     dbo.Message.StationId, dbo.Station.Name, dbo.Message.PumpId, dbo.Pump.Name
 
 GO
