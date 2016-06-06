@@ -238,14 +238,17 @@ CREATE VIEW [dbo].[YearlyReportView]
 AS
 SELECT        row_number() over (order by YEAR(messagetime), dbo.Message.StationId, dbo.Message.PumpId) AS Id, 
 			YEAR(messagetime) AS MessageDate, 
+			(max(totalrunhours) - ISNULL((select max(mm.totalrunhours) from message mm 
+						where DATEPART(yyyy, dateadd(yyyy, 1, mm.messagetime)) = DATEPART(yyyy, dbo.message.messagetime)
+						and mm.stationid = dbo.message.stationid and mm.pumpid = dbo.message.pumpid),0)) as YearlyRunHours,
 			dbo.Message.StationId, dbo.Message.PumpId, MAX(dbo.Message.TotalRunHours) AS TotalRunHours, 
-                         AVG(dbo.Message.DailyRunHours) AS DailyRunHours, MAX(dbo.Message.NumberOfFaults) AS NumberOfFaults, AVG(dbo.Message.Pressure) AS Pressure, 
+                         MAX(dbo.Message.NumberOfFaults) AS NumberOfFaults, AVG(dbo.Message.Pressure) AS Pressure, 
 						 AVG(dbo.Message.Amps) AS Amps, 
                          MAX(dbo.Message.GeneratorKWH) AS GeneratorKWH, MAX(dbo.Message.MainsKWH) AS MainsKWH, dbo.Pump.Name AS Pump, dbo.Station.Name AS Station
 FROM            dbo.Message INNER JOIN
                          dbo.Pump ON dbo.Message.PumpId = dbo.Pump.Id INNER JOIN
                          dbo.Station ON dbo.Message.StationId = dbo.Station.Id
-GROUP BY YEAR(messagetime), dbo.Message.StationId, dbo.Station.Name, dbo.Message.PumpId, dbo.Pump.Name
+GROUP BY DATEPART(yyyy, messagetime), dbo.Message.StationId, dbo.Station.Name, dbo.Message.PumpId, dbo.Pump.Name
 
 
 
