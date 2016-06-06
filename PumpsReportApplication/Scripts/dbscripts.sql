@@ -156,17 +156,29 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE VIEW [dbo].[DailyReportView]
+ALTER VIEW [dbo].[DailyReportView]
 AS
-SELECT        row_number() over (order by CONVERT(date, dbo.Message.MessageTime), dbo.Message.StationId, dbo.Message.PumpId) AS Id, CONVERT(date, dbo.Message.MessageTime) AS MessageDate, dbo.Message.StationId, dbo.Message.PumpId, MAX(dbo.Message.TotalRunHours) AS TotalRunHours, 
-                         AVG(dbo.Message.DailyRunHours) AS DailyRunHours, MAX(dbo.Message.NumberOfFaults) AS NumberOfFaults, AVG(dbo.Message.Pressure) AS Pressure, AVG(dbo.Message.Amps) AS Amps, 
-                         MAX(dbo.Message.GeneratorKWH) AS GeneratorKWH, MAX(dbo.Message.MainsKWH) AS MainsKWH, dbo.Pump.Name AS Pump, dbo.Station.Name AS Station
-FROM            dbo.Message INNER JOIN
-                         dbo.Pump ON dbo.Message.PumpId = dbo.Pump.Id INNER JOIN
-                         dbo.Station ON dbo.Message.StationId = dbo.Station.Id
-GROUP BY CONVERT(date, dbo.Message.MessageTime), dbo.Message.StationId, dbo.Station.Name, dbo.Message.PumpId, dbo.Pump.Name
-
+SELECT        row_number() over (order by CONVERT(date, MessageTime), StationId, PumpId) AS Id, CONVERT(date, MessageTime) AS MessageDate, StationId, PumpId, 
+			  MAX(TotalRunHours) AS TotalRunHours, MAX(DailyRunHours) AS DailyRunHours, MAX(NumberOfFaults) AS NumberOfFaults, AVG(Pressure) AS Pressure, AVG(Amps) AS Amps, 
+				MAX(GeneratorKWH) AS GeneratorKWH, MAX(MainsKWH) AS MainsKWH, Pump AS Pump, Station AS Station
+FROM            dbo.MessageView
+GROUP BY CONVERT(date, MessageTime), StationId, Station, PumpId, Pump
 GO
+/*
+Alternate sql which does not depend on messageview and directly calculates, but very slow. Does not hit index for messagetime
+SELECT        row_number() over (order by CONVERT(date, dbo.Message.MessageTime), dbo.Message.StationId, dbo.Message.PumpId) AS Id, 
+				(max(totalrunhours) - ISNULL((select max(mm.totalrunhours) from message mm 
+						where convert(date, dateadd(dd, 1, mm.messagetime)) = CONVERT(date, dbo.Message.MessageTime)
+						and mm.stationid = dbo.message.stationid and mm.pumpid = dbo.message.pumpid),0)) as DailyRunHours,
+				CONVERT(date, dbo.Message.MessageTime) AS MessageDate, dbo.Message.StationId, dbo.Message.PumpId, MAX(dbo.Message.TotalRunHours) AS TotalRunHours, 
+                MAX(dbo.Message.NumberOfFaults) AS NumberOfFaults, AVG(dbo.Message.Pressure) AS Pressure, 
+				AVG(dbo.Message.Amps) AS Amps, MAX(dbo.Message.GeneratorKWH) AS GeneratorKWH, MAX(dbo.Message.MainsKWH) AS MainsKWH, 
+				dbo.Pump.Name AS Pump, dbo.Station.Name AS Station
+FROM            dbo.Message INNER JOIN
+                dbo.Pump ON dbo.Message.PumpId = dbo.Pump.Id INNER JOIN
+                dbo.Station ON dbo.Message.StationId = dbo.Station.Id
+GROUP BY CONVERT(date, dbo.Message.MessageTime), dbo.Message.StationId, dbo.Station.Name, dbo.Message.PumpId, dbo.Pump.Name
+GO*/
 /****** Object:  View [dbo].[MessageView]    Script Date: 6/6/2016 1:12:34 PM ******/
 SET ANSI_NULLS ON
 GO
@@ -176,7 +188,13 @@ CREATE VIEW [dbo].[MessageView]
 AS
 SELECT        dbo.Message.Id, dbo.Message.StationId, dbo.Message.PumpId, 
   dbo.Pump.Name AS Pump, dbo.Station.Name AS Station,
-  dbo.Message.TotalRunHours, dbo.Message.NumberOfFaults, dbo.Message.Pressure, 
+  dbo.Message.TotalRunHours, 
+  dbo.Message.TotalRunHours -
+							isnull((select max(m.TotalRunHours) as TotalRunHours from message m
+							  where m.stationid = dbo.Message.stationid and m.pumpid = dbo.Message.pumpid 
+							  and convert(date, m.messagetime) = convert(date, dateadd(dd, -1, dbo.Message.messagetime))
+							),0) as DailyRunHours,
+  dbo.Message.NumberOfFaults, dbo.Message.Pressure, 
   dbo.Message.Amps, dbo.Message.MainsKWH, dbo.Message.GeneratorKWH, 
   dbo.Message.IsFault, dbo.Message.MessageTime, dbo.Message.ReceiveTime
 FROM dbo.Message INNER JOIN
