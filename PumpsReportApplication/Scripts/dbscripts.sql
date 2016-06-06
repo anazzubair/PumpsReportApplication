@@ -192,10 +192,10 @@ GO
 CREATE VIEW [dbo].[MonthlyReportView]
 AS
 SELECT row_number() OVER (ORDER BY DATEPART(m, messagetime), DATEPART(yyyy, messagetime), dbo.Message.StationId, dbo.Message.PumpId) AS Id, 
-(max(totalrunhours) - (select max(mm.totalrunhours) from message mm 
+(max(totalrunhours) - ISNULL((select max(mm.totalrunhours) from message mm 
 						where DATEPART(m, dateadd(m, 1, mm.messagetime)) = DATEPART(m, dbo.message.messagetime)
 						AND DATEPART(yyyy, dateadd(m, 1, mm.messagetime)) = DATEPART(yyyy, dbo.message.messagetime)
-						and mm.stationid = dbo.message.stationid and mm.pumpid = dbo.message.pumpid)) as MonthlyRunHours,
+						and mm.stationid = dbo.message.stationid and mm.pumpid = dbo.message.pumpid),0)) as MonthlyRunHours,
 datefromparts(datepart(yyyy, messagetime), datepart(m,messagetime), 1) AS MessageDate, dbo.Message.StationId, dbo.Message.PumpId, 
 MAX(dbo.Message.TotalRunHours) AS TotalRunHours, 
 MAX(dbo.Message.NumberOfFaults) AS NumberOfFaults, 
