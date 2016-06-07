@@ -216,7 +216,7 @@ SELECT row_number() OVER (ORDER BY DATEPART(m, messagetime), DATEPART(yyyy, mess
 						and mm.stationid = dbo.message.stationid and mm.pumpid = dbo.message.pumpid),0)) as MonthlyRunHours,
 datefromparts(datepart(yyyy, messagetime), datepart(m,messagetime), 1) AS MessageDate, dbo.Message.StationId, dbo.Message.PumpId, 
 MAX(dbo.Message.TotalRunHours) AS TotalRunHours, 
-MAX(dbo.Message.NumberOfFaults) AS NumberOfFaults, 
+SUM(dbo.Message.NumberOfFaults) AS NumberOfFaults, 
 AVG(dbo.Message.Pressure) AS Pressure, AVG(dbo.Message.Amps) AS Amps, MAX(dbo.Message.GeneratorKWH) 
 AS GeneratorKWH, MAX(dbo.Message.MainsKWH) AS MainsKWH, dbo.Pump.Name AS Pump, 
 dbo.Station.Name AS Station
@@ -242,9 +242,10 @@ SELECT        row_number() over (order by YEAR(messagetime), dbo.Message.Station
 						where DATEPART(yyyy, dateadd(yyyy, 1, mm.messagetime)) = DATEPART(yyyy, dbo.message.messagetime)
 						and mm.stationid = dbo.message.stationid and mm.pumpid = dbo.message.pumpid),0)) as YearlyRunHours,
 			dbo.Message.StationId, dbo.Message.PumpId, MAX(dbo.Message.TotalRunHours) AS TotalRunHours, 
-                         MAX(dbo.Message.NumberOfFaults) AS NumberOfFaults, AVG(dbo.Message.Pressure) AS Pressure, 
+                         SUM(dbo.Message.NumberOfFaults) AS NumberOfFaults, AVG(dbo.Message.Pressure) AS Pressure, 
 						 AVG(dbo.Message.Amps) AS Amps, 
-                         MAX(dbo.Message.GeneratorKWH) AS GeneratorKWH, MAX(dbo.Message.MainsKWH) AS MainsKWH, dbo.Pump.Name AS Pump, dbo.Station.Name AS Station
+                         MAX(dbo.Message.GeneratorKWH) AS GeneratorKWH, MAX(dbo.Message.MainsKWH) AS MainsKWH, dbo.Pump.Name AS Pump, 
+						 dbo.Station.Name AS Station
 FROM            dbo.Message INNER JOIN
                          dbo.Pump ON dbo.Message.PumpId = dbo.Pump.Id INNER JOIN
                          dbo.Station ON dbo.Message.StationId = dbo.Station.Id
