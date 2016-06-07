@@ -87,7 +87,6 @@ CREATE TABLE [dbo].[Message](
 	[StationId] [bigint] NOT NULL,
 	[PumpId] [bigint] NOT NULL,
 	[TotalRunHours] [decimal](18, 2) NOT NULL,
-	[DailyRunHours] [decimal](18, 2) NOT NULL CONSTRAINT [DF_Message_DailyRunHours]  DEFAULT ((0)),
 	[NumberOfFaults] [bigint] NOT NULL,
 	[Pressure] [decimal](18, 2) NOT NULL,
 	[Amps] [decimal](18, 2) NOT NULL,

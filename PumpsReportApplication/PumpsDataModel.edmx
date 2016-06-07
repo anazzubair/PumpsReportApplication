@@ -13,7 +13,6 @@
           <Property Name="StationId" Type="bigint" Nullable="false" />
           <Property Name="PumpId" Type="bigint" Nullable="false" />
           <Property Name="TotalRunHours" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="DailyRunHours" Type="decimal" Precision="18" Scale="2" />
           <Property Name="NumberOfFaults" Type="bigint" />
           <Property Name="Pressure" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Amps" Type="decimal" Precision="18" Scale="2" />
@@ -290,7 +289,6 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
           <Property Name="StationId" Type="Int64" Nullable="false" />
           <Property Name="PumpId" Type="Int64" Nullable="false" />
           <Property Name="TotalRunHours" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="DailyRunHours" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="NumberOfFaults" Type="Int64" />
           <Property Name="Pressure" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Amps" Type="Decimal" Precision="18" Scale="2" />
@@ -475,7 +473,6 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
                 <ScalarProperty Name="StationId" ColumnName="StationId" />
                 <ScalarProperty Name="PumpId" ColumnName="PumpId" />
                 <ScalarProperty Name="TotalRunHours" ColumnName="TotalRunHours" />
-                <ScalarProperty Name="DailyRunHours" ColumnName="DailyRunHours" />
                 <ScalarProperty Name="NumberOfFaults" ColumnName="NumberOfFaults" />
                 <ScalarProperty Name="Pressure" ColumnName="Pressure" />
                 <ScalarProperty Name="Amps" ColumnName="Amps" />
