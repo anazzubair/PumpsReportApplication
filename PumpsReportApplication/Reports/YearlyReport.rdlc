@@ -264,7 +264,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -1245,7 +1244,7 @@
                                   <Paragraph>
                                     <TextRuns>
                                       <TextRun>
-                                        <Value>Daily Run Hours</Value>
+                                        <Value EvaluationMode="Constant">Yearly Run Hours</Value>
                                         <Style>
                                           <FontFamily>Times New Roman</FontFamily>
                                           <FontSize>11pt</FontSize>
@@ -1270,6 +1269,7 @@
                                   <PaddingBottom>2pt</PaddingBottom>
                                 </Style>
                               </Textbox>
+                              <rd:Selected>true</rd:Selected>
                             </CellContents>
                           </TablixHeader>
                         </TablixMember>
