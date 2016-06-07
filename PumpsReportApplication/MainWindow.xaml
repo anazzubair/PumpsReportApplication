@@ -32,7 +32,7 @@
                     </ComboBox>
 
                     <Label x:Name="LabelReportType" Content="Select Report:"/>
-                    <ComboBox x:Name="ListReportTypes" MinWidth="100">
+                    <ComboBox x:Name="ListReportTypes" MinWidth="100" SelectionChanged="ListReportTypes_SelectionChanged">
                         <System:String>Daily</System:String>
                         <System:String>Monthly</System:String>
                         <System:String>Yearly</System:String>

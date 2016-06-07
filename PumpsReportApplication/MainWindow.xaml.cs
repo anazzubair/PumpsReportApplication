@@ -44,7 +44,7 @@ namespace PumpsReportApplication
 
         private void SetDatePickers()
         {
-            DatePickerFrom.SelectedDate = DateTime.Now;
+            DatePickerFrom.SelectedDate = DateTime.Now.AddMonths(-1);
             DatePickerTo.SelectedDate = DateTime.Now;
         }
 
@@ -193,6 +193,27 @@ namespace PumpsReportApplication
                     info = extension.GetType().GetField("m_isVisible", BindingFlags.Instance | BindingFlags.NonPublic);
                     info.SetValue(extension, false);
                 }
+            }
+        }
+
+        private void ListReportTypes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch (ListReportTypes.SelectedValue.ToString())
+            {
+                case "Daily":
+                    DatePickerFrom.SelectedDate = DateTime.Now.AddMonths(-1);
+                    DatePickerTo.SelectedDate = DateTime.Now;
+                    break;
+                case "Monthly":
+                    DatePickerFrom.SelectedDate = DateTime.Now.AddYears(-1);
+                    DatePickerTo.SelectedDate = DateTime.Now;
+                    break;
+                case "Yearly":
+                    DatePickerFrom.SelectedDate = DateTime.Now.AddYears(-12);
+                    DatePickerTo.SelectedDate = DateTime.Now;
+                    break;
+                default:
+                    break;
             }
         }
     }
