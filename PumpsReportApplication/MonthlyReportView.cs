@@ -19,7 +19,6 @@ namespace PumpsReportApplication
         public long StationId { get; set; }
         public long PumpId { get; set; }
         public Nullable<decimal> TotalRunHours { get; set; }
-        public Nullable<decimal> DailyRunHours { get; set; }
         public Nullable<long> NumberOfFaults { get; set; }
         public Nullable<decimal> Pressure { get; set; }
         public Nullable<decimal> Amps { get; set; }
@@ -27,5 +26,6 @@ namespace PumpsReportApplication
         public Nullable<decimal> MainsKWH { get; set; }
         public string Pump { get; set; }
         public string Station { get; set; }
+        public Nullable<decimal> MonthlyRunHours { get; set; }
     }
 }

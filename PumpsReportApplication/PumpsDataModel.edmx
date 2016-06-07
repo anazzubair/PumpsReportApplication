@@ -12,13 +12,13 @@
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StationId" Type="bigint" Nullable="false" />
           <Property Name="PumpId" Type="bigint" Nullable="false" />
-          <Property Name="TotalRunHours" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="DailyRunHours" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="NumberOfFaults" Type="bigint" Nullable="false" />
-          <Property Name="Pressure" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="Amps" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="MainsKWH" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="GeneratorKWH" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TotalRunHours" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DailyRunHours" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="NumberOfFaults" Type="bigint" />
+          <Property Name="Pressure" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Amps" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="MainsKWH" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="GeneratorKWH" Type="decimal" Precision="18" Scale="2" />
           <Property Name="IsFault" Type="nchar" MaxLength="1" Nullable="false" />
           <Property Name="MessageTime" Type="datetime" Nullable="false" />
           <Property Name="ReceiveTime" Type="datetime" Nullable="false" />
@@ -62,7 +62,7 @@ warning 6002: The table/view 'PumpsDB.dbo.DailyReportView' does not have a prima
           <Property Name="StationId" Type="bigint" Nullable="false" />
           <Property Name="PumpId" Type="bigint" Nullable="false" />
           <Property Name="TotalRunHours" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="DailyRunHours" Type="decimal" Precision="38" Scale="6" />
+          <Property Name="DailyRunHours" Type="decimal" Precision="19" Scale="2" />
           <Property Name="NumberOfFaults" Type="bigint" />
           <Property Name="Pressure" Type="decimal" Precision="38" Scale="6" />
           <Property Name="Amps" Type="decimal" Precision="38" Scale="6" />
@@ -96,6 +96,7 @@ warning 6002: The table/view 'PumpsDB.dbo.MessageView' does not have a primary k
           <Property Name="Pump" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="Station" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="TotalRunHours" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="DailyRunHours" Type="decimal" Precision="19" Scale="2" />
           <Property Name="NumberOfFaults" Type="bigint" Nullable="false" />
           <Property Name="Pressure" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Amps" Type="decimal" Precision="18" Scale="2" Nullable="false" />
@@ -109,14 +110,18 @@ warning 6002: The table/view 'PumpsDB.dbo.MessageView' does not have a primary k
 warning 6002: The table/view 'PumpsDB.dbo.MonthlyReportView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="MonthlyReportView">
           <Key>
+            
+            
+            
+            
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="bigint" Nullable="false" />
-          <Property Name="MessageDate" Type="datetime" />
+          <Property Name="MonthlyRunHours" Type="decimal" Precision="19" Scale="2" />
+          <Property Name="MessageDate" Type="date" />
           <Property Name="StationId" Type="bigint" Nullable="false" />
           <Property Name="PumpId" Type="bigint" Nullable="false" />
           <Property Name="TotalRunHours" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="DailyRunHours" Type="decimal" Precision="38" Scale="6" />
           <Property Name="NumberOfFaults" Type="bigint" />
           <Property Name="Pressure" Type="decimal" Precision="38" Scale="6" />
           <Property Name="Amps" Type="decimal" Precision="38" Scale="6" />
@@ -137,10 +142,10 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
           </Key>
           <Property Name="Id" Type="bigint" Nullable="false" />
           <Property Name="MessageDate" Type="int" />
+          <Property Name="YearlyRunHours" Type="decimal" Precision="19" Scale="2" />
           <Property Name="StationId" Type="bigint" Nullable="false" />
           <Property Name="PumpId" Type="bigint" Nullable="false" />
           <Property Name="TotalRunHours" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="DailyRunHours" Type="decimal" Precision="38" Scale="6" />
           <Property Name="NumberOfFaults" Type="bigint" />
           <Property Name="Pressure" Type="decimal" Precision="38" Scale="6" />
           <Property Name="Amps" Type="decimal" Precision="38" Scale="6" />
@@ -215,6 +220,7 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
     [MessageView].[Pump] AS [Pump], 
     [MessageView].[Station] AS [Station], 
     [MessageView].[TotalRunHours] AS [TotalRunHours], 
+    [MessageView].[DailyRunHours] AS [DailyRunHours], 
     [MessageView].[NumberOfFaults] AS [NumberOfFaults], 
     [MessageView].[Pressure] AS [Pressure], 
     [MessageView].[Amps] AS [Amps], 
@@ -228,11 +234,11 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
           <EntitySet Name="MonthlyReportView" EntityType="Self.MonthlyReportView" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [MonthlyReportView].[Id] AS [Id], 
+    [MonthlyReportView].[MonthlyRunHours] AS [MonthlyRunHours], 
     [MonthlyReportView].[MessageDate] AS [MessageDate], 
     [MonthlyReportView].[StationId] AS [StationId], 
     [MonthlyReportView].[PumpId] AS [PumpId], 
     [MonthlyReportView].[TotalRunHours] AS [TotalRunHours], 
-    [MonthlyReportView].[DailyRunHours] AS [DailyRunHours], 
     [MonthlyReportView].[NumberOfFaults] AS [NumberOfFaults], 
     [MonthlyReportView].[Pressure] AS [Pressure], 
     [MonthlyReportView].[Amps] AS [Amps], 
@@ -246,10 +252,10 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
             <DefiningQuery>SELECT 
     [YearlyReportView].[Id] AS [Id], 
     [YearlyReportView].[MessageDate] AS [MessageDate], 
+    [YearlyReportView].[YearlyRunHours] AS [YearlyRunHours], 
     [YearlyReportView].[StationId] AS [StationId], 
     [YearlyReportView].[PumpId] AS [PumpId], 
     [YearlyReportView].[TotalRunHours] AS [TotalRunHours], 
-    [YearlyReportView].[DailyRunHours] AS [DailyRunHours], 
     [YearlyReportView].[NumberOfFaults] AS [NumberOfFaults], 
     [YearlyReportView].[Pressure] AS [Pressure], 
     [YearlyReportView].[Amps] AS [Amps], 
@@ -283,13 +289,13 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StationId" Type="Int64" Nullable="false" />
           <Property Name="PumpId" Type="Int64" Nullable="false" />
-          <Property Name="TotalRunHours" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="DailyRunHours" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="NumberOfFaults" Type="Int64" Nullable="false" />
-          <Property Name="Pressure" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="Amps" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="MainsKWH" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="GeneratorKWH" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TotalRunHours" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DailyRunHours" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="NumberOfFaults" Type="Int64" />
+          <Property Name="Pressure" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Amps" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="MainsKWH" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="GeneratorKWH" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="IsFault" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="MessageTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ReceiveTime" Type="DateTime" Nullable="false" Precision="3" />
@@ -342,6 +348,7 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
           <Property Name="IsFault" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="MessageTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ReceiveTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DailyRunHours" Type="Decimal" Precision="19" Scale="2" />
         </EntityType>
         <Association Name="FK_Message_Pump">
           <End Role="Pump" Type="Self.Pump" Multiplicity="1" />
@@ -410,7 +417,7 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
           <Property Name="StationId" Type="Int64" Nullable="false" />
           <Property Name="PumpId" Type="Int64" Nullable="false" />
           <Property Name="TotalRunHours" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="DailyRunHours" Type="Decimal" Precision="38" Scale="6" />
+          <Property Name="DailyRunHours" Type="Decimal" Precision="19" Scale="2" />
           <Property Name="NumberOfFaults" Type="Int64" />
           <Property Name="Pressure" Type="Decimal" Precision="38" Scale="6" />
           <Property Name="Amps" Type="Decimal" Precision="38" Scale="6" />
@@ -428,7 +435,6 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
           <Property Name="StationId" Type="Int64" Nullable="false" />
           <Property Name="PumpId" Type="Int64" Nullable="false" />
           <Property Name="TotalRunHours" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="DailyRunHours" Type="Decimal" Precision="38" Scale="6" />
           <Property Name="NumberOfFaults" Type="Int64" />
           <Property Name="Pressure" Type="Decimal" Precision="38" Scale="6" />
           <Property Name="Amps" Type="Decimal" Precision="38" Scale="6" />
@@ -436,17 +442,17 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
           <Property Name="MainsKWH" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Pump" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Station" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="YearlyRunHours" Type="Decimal" Precision="19" Scale="2" />
         </EntityType>
         <EntityType Name="MonthlyReportView">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="MessageDate" Type="DateTime" Precision="3" />
+          <Property Name="MessageDate" Type="DateTime" Precision="0" />
           <Property Name="StationId" Type="Int64" Nullable="false" />
           <Property Name="PumpId" Type="Int64" Nullable="false" />
           <Property Name="TotalRunHours" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="DailyRunHours" Type="Decimal" Precision="38" Scale="6" />
           <Property Name="NumberOfFaults" Type="Int64" />
           <Property Name="Pressure" Type="Decimal" Precision="38" Scale="6" />
           <Property Name="Amps" Type="Decimal" Precision="38" Scale="6" />
@@ -454,6 +460,7 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
           <Property Name="MainsKWH" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Pump" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Station" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="MonthlyRunHours" Type="Decimal" Precision="19" Scale="2" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -510,6 +517,7 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
           <EntitySetMapping Name="MessageViews">
             <EntityTypeMapping TypeName="PumpsDBModel.MessageView">
               <MappingFragment StoreEntitySet="MessageView">
+                <ScalarProperty Name="DailyRunHours" ColumnName="DailyRunHours" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StationId" ColumnName="StationId" />
                 <ScalarProperty Name="PumpId" ColumnName="PumpId" />
@@ -549,6 +557,7 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
           <EntitySetMapping Name="YearlyReportViews">
             <EntityTypeMapping TypeName="PumpsDBModel.YearlyReportView">
               <MappingFragment StoreEntitySet="YearlyReportView">
+                <ScalarProperty Name="YearlyRunHours" ColumnName="YearlyRunHours" />
                 <ScalarProperty Name="Station" ColumnName="Station" />
                 <ScalarProperty Name="Pump" ColumnName="Pump" />
                 <ScalarProperty Name="MainsKWH" ColumnName="MainsKWH" />
@@ -556,7 +565,6 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
                 <ScalarProperty Name="Amps" ColumnName="Amps" />
                 <ScalarProperty Name="Pressure" ColumnName="Pressure" />
                 <ScalarProperty Name="NumberOfFaults" ColumnName="NumberOfFaults" />
-                <ScalarProperty Name="DailyRunHours" ColumnName="DailyRunHours" />
                 <ScalarProperty Name="TotalRunHours" ColumnName="TotalRunHours" />
                 <ScalarProperty Name="PumpId" ColumnName="PumpId" />
                 <ScalarProperty Name="StationId" ColumnName="StationId" />
@@ -568,6 +576,7 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
           <EntitySetMapping Name="MonthlyReportViews">
             <EntityTypeMapping TypeName="PumpsDBModel.MonthlyReportView">
               <MappingFragment StoreEntitySet="MonthlyReportView">
+                <ScalarProperty Name="MonthlyRunHours" ColumnName="MonthlyRunHours" />
                 <ScalarProperty Name="Station" ColumnName="Station" />
                 <ScalarProperty Name="Pump" ColumnName="Pump" />
                 <ScalarProperty Name="MainsKWH" ColumnName="MainsKWH" />
@@ -575,7 +584,6 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
                 <ScalarProperty Name="Amps" ColumnName="Amps" />
                 <ScalarProperty Name="Pressure" ColumnName="Pressure" />
                 <ScalarProperty Name="NumberOfFaults" ColumnName="NumberOfFaults" />
-                <ScalarProperty Name="DailyRunHours" ColumnName="DailyRunHours" />
                 <ScalarProperty Name="TotalRunHours" ColumnName="TotalRunHours" />
                 <ScalarProperty Name="PumpId" ColumnName="PumpId" />
                 <ScalarProperty Name="StationId" ColumnName="StationId" />

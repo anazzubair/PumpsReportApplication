@@ -28,5 +28,6 @@ namespace PumpsReportApplication
         public string IsFault { get; set; }
         public System.DateTime MessageTime { get; set; }
         public System.DateTime ReceiveTime { get; set; }
+        public Nullable<decimal> DailyRunHours { get; set; }
     }
 }

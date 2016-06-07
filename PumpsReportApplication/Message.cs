@@ -17,13 +17,13 @@ namespace PumpsReportApplication
         public long Id { get; set; }
         public long StationId { get; set; }
         public long PumpId { get; set; }
-        public decimal TotalRunHours { get; set; }
-        public decimal DailyRunHours { get; set; }
-        public long NumberOfFaults { get; set; }
-        public decimal Pressure { get; set; }
-        public decimal Amps { get; set; }
-        public decimal MainsKWH { get; set; }
-        public decimal GeneratorKWH { get; set; }
+        public Nullable<decimal> TotalRunHours { get; set; }
+        public Nullable<decimal> DailyRunHours { get; set; }
+        public Nullable<long> NumberOfFaults { get; set; }
+        public Nullable<decimal> Pressure { get; set; }
+        public Nullable<decimal> Amps { get; set; }
+        public Nullable<decimal> MainsKWH { get; set; }
+        public Nullable<decimal> GeneratorKWH { get; set; }
         public string IsFault { get; set; }
         public System.DateTime MessageTime { get; set; }
         public System.DateTime ReceiveTime { get; set; }
