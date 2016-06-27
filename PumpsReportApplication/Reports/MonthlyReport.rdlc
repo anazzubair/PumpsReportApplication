@@ -1151,7 +1151,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
               </TablixCells>
@@ -1962,7 +1961,7 @@ End Function
 
 Public Function ProcessNull(Value) 
 	If (Value is Nothing) Then
-		Return "NULL"
+		Return "0"
 	End If
 	Return Value
 End Function

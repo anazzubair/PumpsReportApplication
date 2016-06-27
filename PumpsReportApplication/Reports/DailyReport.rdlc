@@ -1977,7 +1977,7 @@ End Function
 
 Public Function ProcessNull(Value) 
 	If (Value is Nothing) Then
-		Return "NULL"
+		Return "0"
 	End If
 	Return Value
 End Function</Code>
