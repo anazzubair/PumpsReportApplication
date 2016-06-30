@@ -78,6 +78,9 @@
     <Compile Include="DailyReportView.cs">
       <DependentUpon>PumpsDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="getDailyReport_Result.cs">
+      <DependentUpon>PumpsDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Message.cs">
       <DependentUpon>PumpsDataModel.tt</DependentUpon>
     </Compile>

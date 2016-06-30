@@ -65,7 +65,7 @@ namespace PumpsReportApplication
             switch (ListReportTypes.SelectedValue.ToString())
             {
                 case "Daily":
-                    GenerateDailyReport();
+                    GenerateDailyReportST();
                     break;
                 case "Monthly":
                     GenerateMonthlyReport();
@@ -150,11 +150,39 @@ namespace PumpsReportApplication
 
             using (var db = new PumpsDBEntities())
             {
+                var fromDate = DatePickerFrom.SelectedDate.Value.Date;
+                var toDate = DatePickerTo.SelectedDate.Value.Date.AddDays(1);
                 var dailyReportData = db.DailyReportViews
                                         .Where(dr => dr.StationId == (long)ListStations.SelectedValue
-                                         && dr.MessageDate >= DatePickerFrom.SelectedDate
-                                         && dr.MessageDate < DbFunctions.AddDays(DatePickerTo.SelectedDate, 1))
+                                         && dr.MessageDate >= fromDate
+                                         && dr.MessageDate < toDate)
                                         .ToList();
+                var pumpReportDataSource = new ReportDataSource("DailyReportDataSet", dailyReportData);
+                ReportViewer.LocalReport.DataSources.Add(pumpReportDataSource);
+                ReportViewer.LocalReport.ReportEmbeddedResource = "PumpsReportApplication.Reports.DailyReport.rdlc";
+                DisableUnwantedExportFormat(ReportViewer, "PDF");
+                DisableUnwantedExportFormat(ReportViewer, "Word");
+
+                var stationNameParameter = new ReportParameter("StationName", ((Station)ListStations.SelectedItem).Name);
+                var fromDateParameter = new ReportParameter("FromDate", DatePickerFrom.SelectedDate.Value.ToString("dd/MM/yyyy"));
+                var toDateParameter = new ReportParameter("ToDate", DatePickerTo.SelectedDate.Value.ToString("dd/MM/yyyy"));
+
+                ReportViewer.LocalReport.SetParameters(new List<ReportParameter> { stationNameParameter, fromDateParameter, toDateParameter });
+
+                ReportViewer.LocalReport.Refresh();
+                ReportViewer.RefreshReport();
+            }
+        }
+
+        private void GenerateDailyReportST()
+        {
+            if (!IsFormValid()) return;
+
+            using (var db = new PumpsDBEntities())
+            {
+                var fromDate = DatePickerFrom.SelectedDate.Value.Date;
+                var toDate = DatePickerTo.SelectedDate.Value.Date.AddDays(1);
+                var dailyReportData = db.GetDailyReport((long)ListStations.SelectedValue, fromDate, toDate).ToList();
                 var pumpReportDataSource = new ReportDataSource("DailyReportDataSet", dailyReportData);
                 ReportViewer.LocalReport.DataSources.Add(pumpReportDataSource);
                 ReportViewer.LocalReport.ReportEmbeddedResource = "PumpsReportApplication.Reports.DailyReport.rdlc";

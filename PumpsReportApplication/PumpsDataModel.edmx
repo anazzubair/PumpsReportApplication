@@ -189,6 +189,11 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="getDailyReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="StationId" Type="bigint" Mode="In" />
+          <Parameter Name="FromDate" Type="datetime" Mode="In" />
+          <Parameter Name="ToDate" Type="datetime" Mode="In" />
+        </Function>
         <EntityContainer Name="PumpsDBModelStoreContainer">
           <EntitySet Name="Message" EntityType="Self.Message" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pump" EntityType="Self.Pump" Schema="dbo" store:Type="Tables" />
@@ -405,6 +410,11 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
           <EntitySet Name="DailyReportViews" EntityType="PumpsDBModel.DailyReportView" />
           <EntitySet Name="YearlyReportViews" EntityType="PumpsDBModel.YearlyReportView" />
           <EntitySet Name="MonthlyReportViews" EntityType="PumpsDBModel.MonthlyReportView" />
+          <FunctionImport Name="GetDailyReport" EntitySet="DailyReportViews" ReturnType="Collection(PumpsDBModel.DailyReportView)">
+            <Parameter Name="StationId" Mode="In" Type="Int64" />
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="DailyReportView">
           <Key>
@@ -460,6 +470,21 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
           <Property Name="Station" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="MonthlyRunHours" Type="Decimal" Precision="19" Scale="2" />
         </EntityType>
+        <ComplexType Name="getDailyReport_Result">
+          <Property Type="Int64" Name="Id" Nullable="true" />
+          <Property Type="DateTime" Name="MessageDate" Nullable="true" />
+          <Property Type="Int64" Name="StationId" Nullable="false" />
+          <Property Type="Int64" Name="PumpId" Nullable="false" />
+          <Property Type="Decimal" Name="TotalRunHours" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="DailyRunHours" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="Int64" Name="NumberOfFaults" Nullable="true" />
+          <Property Type="Decimal" Name="Pressure" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="Amps" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="GeneratorKWH" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="MainsKWH" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="Pump" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="Station" Nullable="false" MaxLength="250" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -589,6 +614,8 @@ warning 6002: The table/view 'PumpsDB.dbo.YearlyReportView' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetDailyReport" FunctionName="PumpsDBModel.Store.getDailyReport">
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
