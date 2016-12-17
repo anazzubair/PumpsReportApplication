@@ -330,7 +330,7 @@ GO
 
 
 
-CREATE PROCEDURE [dbo].[getDailyReport] 
+CREATE PROCEDURE [dbo].[getDailyReportOld] 
 	@StationId bigint,
 	@FromDate datetime,
 	@ToDate datetime
@@ -359,6 +359,57 @@ BEGIN
 				 dbo.Pump ON dbo.Message.PumpId = dbo.Pump.Id INNER JOIN
 				 dbo.Station ON dbo.Message.StationId = dbo.Station.Id
 				 where dbo.Message.MessageTime >= @FromDate and dbo.Message.MessageTime < @ToDate and dbo.Message.StationId = @StationId
+		) messageview
+	GROUP BY CONVERT(date, MessageTime), StationId, Station, PumpId, Pump
+
+
+END
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[getDailyReport]    Script Date: 6/30/2016 1:45:31 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+
+ALTER PROCEDURE [dbo].[getDailyReport] 
+	@StationId bigint,
+	@FromDate datetime,
+	@ToDate datetime
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	SELECT        row_number() over (order by CONVERT(date, MessageTime), StationId, PumpId) AS Id, CONVERT(date, MessageTime) AS MessageDate, StationId, PumpId, 
+				  MAX(TotalRunHours) AS TotalRunHours, MAX(DailyRunHours) AS DailyRunHours, MAX(NumberOfFaults) AS NumberOfFaults, AVG(Pressure) AS Pressure, AVG(Amps) AS Amps, 
+					MAX(GeneratorKWH) AS GeneratorKWH, MAX(MainsKWH) AS MainsKWH, Pump AS Pump, Station AS Station
+	FROM            
+		(
+			SELECT        dbo.Message.Id, dbo.Message.StationId, dbo.Message.PumpId, 
+			  dbo.Pump.Name AS Pump, dbo.Station.Name AS Station,
+			  dbo.Message.TotalRunHours, 
+			  (dbo.Message.TotalRunHours - isnull(p.PreviousTotalRunHours,0)) as DailyRunHours,
+			  dbo.Message.NumberOfFaults, dbo.Message.Pressure, 
+			  dbo.Message.Amps, dbo.Message.MainsKWH, dbo.Message.GeneratorKWH, 
+			  dbo.Message.IsFault, dbo.Message.MessageTime, dbo.Message.ReceiveTime
+			FROM dbo.Message INNER JOIN
+				 dbo.Pump ON dbo.Message.PumpId = dbo.Pump.Id INNER JOIN
+				 dbo.Station ON dbo.Message.StationId = dbo.Station.Id
+				 left join 
+				 (
+					select isnull(max(m.TotalRunHours), 0) as PreviousTotalRunHours, CONVERT(date, m.MessageTime) as MessageTime, m.StationId, m.PumpId
+					from message m
+					where m.MessageTime >= @FromDate and m.MessageTime < @ToDate and  m.StationId = @StationId
+					GROUP BY CONVERT(date, m.MessageTime), m.StationId, m.PumpId
+				 ) p on convert(date, p.messagetime) = convert(date, dateadd(dd, -1, dbo.Message.messagetime))
+					 and p.stationid = dbo.Message.stationid and p.pumpid = dbo.Message.pumpid 
+			where dbo.Message.MessageTime >= @FromDate and dbo.Message.MessageTime < @ToDate and dbo.Message.StationId = @StationId
 		) messageview
 	GROUP BY CONVERT(date, MessageTime), StationId, Station, PumpId, Pump
 
