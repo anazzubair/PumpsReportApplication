@@ -405,7 +405,7 @@ BEGIN
 				 (
 					select isnull(max(m.TotalRunHours), 0) as PreviousTotalRunHours, CONVERT(date, m.MessageTime) as MessageTime, m.StationId, m.PumpId
 					from message m
-					where m.MessageTime >= @FromDate and m.MessageTime < @ToDate and  m.StationId = @StationId
+					where m.MessageTime >= dateadd(dd, -1, @FromDate) and m.MessageTime < @ToDate and  m.StationId = @StationId
 					GROUP BY CONVERT(date, m.MessageTime), m.StationId, m.PumpId
 				 ) p on convert(date, p.messagetime) = convert(date, dateadd(dd, -1, dbo.Message.messagetime))
 					 and p.stationid = dbo.Message.stationid and p.pumpid = dbo.Message.pumpid 
